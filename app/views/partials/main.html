@@ -1,20 +1,29 @@
-<div ng-include="'partials/navbar'"></div>
-
-<div class="jumbotron">
-  <h1>'Allo, 'Allo <span ng-show="currentUser">{{ currentUser.name }}</span>!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
+<!-- <div ng-include="'partials/navbar'"></div> -->
+<div class="google-map span7"
+  center="map.center"
+  zoom="map.zoom"
+  draggable="true"
+  dragging="map.dragging"
+  bounds="map.bounds"
+  events="map.events"
+  options="map.options"
+  pan="true"
+  control="map.control"
+  >
 </div>
 
-<div class="row marketing">
+<!-- <div class="jumbotron">
+  <h1>'Allo, 'Allo <span ng-show="currentUser">{{ currentUser.name }}</span>!</h1>
+
+  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
+</div> -->
+
+<div id="panel">
   <form ng-submit="locationCreate(form)" class="form" name="form">
-    <input type="text" ng-model="locationParam.assignedName">
-    <input type="text" ng-model="locationParam.address">
-    <input type="text" ng-model="locationParam.longitude">
-    <input type="text" ng-model="locationParam.latitude">
+    <input type="text" ng-model="createLocationParam.assignedName">
+    <input type="text" ng-model="createLocationParam.address">
+    <input type="text" ng-model="createLocationParam.longitude">
+    <input type="text" ng-model="createLocationParam.latitude">
     <button type="submit" class="btn btn-lg btn-primary"> Create in database </button>
   </form>
   <div ng-repeat="thing in awesomeThings">
@@ -23,6 +32,6 @@
   </div>
 </div>
 
-<div class="footer">
+<!-- <div class="footer">
   <p>♥ from the Yeoman team</p>
-</div>
+</div> -->
