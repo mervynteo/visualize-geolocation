@@ -10,6 +10,13 @@
 </div>
 
 <div class="row marketing">
+  <form ng-submit="locationCreate(form)" class="form" name="form">
+    <input type="text" ng-model="locationParam.assignedName">
+    <input type="text" ng-model="locationParam.address">
+    <input type="text" ng-model="locationParam.longitude">
+    <input type="text" ng-model="locationParam.latitude">
+    <button type="submit" class="btn btn-lg btn-primary"> Create in database </button>
+  </form>
   <div ng-repeat="thing in awesomeThings">
       <h4>{{thing.name}}</h4>
       <p>{{thing.info}}</p>
