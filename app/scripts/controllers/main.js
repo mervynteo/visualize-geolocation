@@ -33,6 +33,12 @@ angular.module('uberLocationApp')
       var newLocation = new LocationResource($scope.createLocationParam);
 
       newLocation.$save();
-      // try using angular resource to submit to rest endpoint here
     };
+
+    $scope.existingLocations = LocationResource.query();
+    
+    $scope.existingLocations.$promise.then(function(result) {
+      console.log(result);
+      $scope.existingLocations = result;
+    });
   });

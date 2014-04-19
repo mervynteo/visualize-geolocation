@@ -26,9 +26,11 @@
     <input type="text" ng-model="createLocationParam.latitude">
     <button type="submit" class="btn btn-lg btn-primary"> Create in database </button>
   </form>
-  <div ng-repeat="thing in awesomeThings">
-      <h4>{{thing.name}}</h4>
-      <p>{{thing.info}}</p>
+
+  <!-- show existing saved locations -->
+  <div ng-repeat="existingLocation in existingLocations">
+      <h4>{{existingLocation.assignedName}}</h4>
+      <p>{{existingLocation.address}}</p>
   </div>
 </div>
 
