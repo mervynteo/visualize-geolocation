@@ -41,6 +41,7 @@ body,
 
 .uber-panel {
   border-color: black;
+  font-size: 16px;
 }
 
 .panel-heading {
@@ -50,6 +51,32 @@ body,
   text-align: center;
   text-transform: uppercase;
 }
+
+.location-geo-image {
+  width: 330px;
+  height: 150px;
+  position: relative;
+  p {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.8);
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+  .location-delete {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    color: white;
+  }
+}
+
+.location-address {
+  font-size: 12px;
+}
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

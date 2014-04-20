@@ -41,11 +41,19 @@
 
 
     <!-- show existing saved locations -->
-    <div ng-repeat="existingLocation in existingLocations">
-        <h4>{{existingLocation.assignedName}}</h4>
-        <p>{{existingLocation.address}}</p>
-        <img src={{existingLocation.googleStreet}} />
-    </div>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="existingLocation in existingLocations">
+        <div class="location-geo-image" style="background-image: url('http://maps.googleapis.com/maps/api/streetview?size=330x150&location={{existingLocation.latitude}},{{existingLocation.longitude}}&fov=90&heading=235&pitch=10&sensor=false')">
+          <p>
+            {{existingLocation.assignedName}}<span class="glyphicon glyphicon-pencil"></span>
+          </p>
+          <span class="glyphicon glyphicon-remove location-delete"></span>
+        </div>
+        <p class="location-address">{{existingLocation.address}}<span class="glyphicon glyphicon-pencil"></span></p>
+      </li>
+    </ul>
+
+  <!-- end: .panel -->
   </div>
 </div>
 
