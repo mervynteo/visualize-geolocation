@@ -93,6 +93,9 @@ angular.module('uberLocationApp')
     $scope.existingLocations = LocationResource.query();
     
     $scope.existingLocations.$promise.then(function(result) {
+      for (var loc in result) {
+        result[loc].googleStreet = 'http://maps.googleapis.com/maps/api/streetview?size=330x150&location=' +result[loc].latitude+ ',' +result[loc].longitude+ '&fov=90&heading=235&pitch=10&sensor=false';
+      }
       console.log(result);
       $scope.existingLocations = result;
     });

@@ -2,6 +2,12 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 
+p {
+  font-family: "ff-clan-web-pro-wide", sans-serif;
+  font-weight: normal;
+  font-size: 14px;
+}
+
 html,
 body,
 .view-window,
@@ -14,14 +20,15 @@ body,
   //z-index: 0;
 }
 
-#panel {
+#control-panel {
   position: absolute;
   right: 0px;
   top: 0px;
-  width: 300px;
+  width: 400px; //needs to be responsive
   background-color: white;
   height: 100%;
   overflow-y: scroll;
+  padding: 10px;
 }
 
 //////////////////////////////
@@ -32,7 +39,17 @@ body,
     padding: 0.2em 0;
 }
 
+.uber-panel {
+  border-color: black;
+}
 
+.panel-heading {
+  font-family: "ff-clan-web-pro-wide", sans-serif;
+  font-weight: normal;
+  background-color: grey;
+  text-align: center;
+  text-transform: uppercase;
+}
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
