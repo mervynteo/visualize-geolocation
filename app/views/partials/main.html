@@ -19,13 +19,23 @@
 </div> -->
 
 <div id="panel">
-  <form ng-submit="locationCreate(form)" class="form" name="form">
-    <input type="text" ng-model="createLocationParam.assignedName">
-    <input type="text" ng-model="createLocationParam.address">
-    <input type="text" ng-model="createLocationParam.longitude">
-    <input type="text" ng-model="createLocationParam.latitude">
-    <button type="submit" class="btn btn-lg btn-primary"> Create in database </button>
-  </form>
+<h2>My Favorite Locations</h2>
+
+  <div>
+    <!--show reverse geocode here-->
+    <div class="alert alert-danger" ng-show="locationCreate.status.needAddress">
+      Select a location on map first
+    </div>
+    <p>Current address: {{locationCreate.params.address}}</p>
+    <form ng-submit="locationCreate.dummy(form)" class="form" name="form">
+      <input type="text" ng-model="locationCreate.params.assignedName" placeholder="Name this location" required>
+      <button type="submit" class="btn btn-lg btn-primary"> Create in database </button>
+    </form>
+    <div class="alert alert-success" ng-show="locationCreate.status.saveSuccess">
+      Location saved!
+    </div>
+  </div>
+
 
   <!-- show existing saved locations -->
   <div ng-repeat="existingLocation in existingLocations">
