@@ -47,7 +47,7 @@
           <p>
             {{existingLocation.assignedName}}<span class="glyphicon glyphicon-pencil"></span>
           </p>
-          <span class="glyphicon glyphicon-remove location-delete"></span>
+          <span class="glyphicon glyphicon-remove location-delete" ng-click="locationDelete($event, existingLocation)"></span>
         </div>
         <p class="location-address">{{existingLocation.address}}<span class="glyphicon glyphicon-pencil"></span></p>
       </li>

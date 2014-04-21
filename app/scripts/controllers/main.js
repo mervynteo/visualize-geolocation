@@ -90,12 +90,18 @@ angular.module('uberLocationApp')
       // maybe after save, scroll down to google picture of created location?
     };
 
+    $scope.locationDelete = function(event, location) {
+      //want to hide this element upon click eventually
+      // http://jsfiddle.net/ricardohbin/5z5Qz/
+
+      var ToDelete = $resource('api/locations/:id', {id: '@id'});
+      var toDelete = ToDelete.remove({id: location._id});
+    };
+
+
     $scope.existingLocations = LocationResource.query();
     
     $scope.existingLocations.$promise.then(function(result) {
-      for (var loc in result) {
-        result[loc].googleStreet = 'http://maps.googleapis.com/maps/api/streetview?size=330x150&location=' +result[loc].latitude+ ',' +result[loc].longitude+ '&fov=90&heading=235&pitch=10&sensor=false';
-      }
       console.log(result);
       $scope.existingLocations = result;
     });
