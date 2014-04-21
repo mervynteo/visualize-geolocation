@@ -91,8 +91,12 @@ angular.module('uberLocationApp')
     };
 
     $scope.locationDelete = function(event, location) {
-      //want to hide this element upon click eventually
+      //maybe add a blocking dialog to confirm deletion.
+
       // http://jsfiddle.net/ricardohbin/5z5Qz/
+
+      event.toElement.parentElement.parentElement.style.display = "none";
+      //add smooth transitions later
 
       var ToDelete = $resource('api/locations/:id', {id: '@id'});
       var toDelete = ToDelete.remove({id: location._id});
