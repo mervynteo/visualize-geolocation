@@ -23,14 +23,17 @@
     <div class="panel-heading uber-font">My Favorite Locations</div>
 
     <div class="panel-body">
+      <div class="label">
+        Add to Favorites
+      </div>
       <!--show reverse geocode here-->
       <div class="alert alert-danger" ng-show="locationCreate.status.needAddress">
         Select a location on map first
       </div>
-      <p>Current address: {{locationCreate.params.address}}</p>
+      <p>Current selected address: {{locationCreate.params.address}}</p>
       <form ng-submit="locationCreate.dummy(form)" class="form" name="form">
-        <input type="text" ng-model="locationCreate.params.assignedName" placeholder="Name this location" required>
-        <button type="submit" class="btn btn-lg btn-primary"> Create in database </button>
+        <input type="text" ng-model="locationCreate.params.assignedName" placeholder="Name this location" required id="name-field">
+        <button type="submit" class="btn">Save Location</button>
       </form>
 
       <!-- alert -->
