@@ -92,6 +92,7 @@ angular.module('uberLocationApp')
 
     $scope.locationDelete = function(event, location) {
       //maybe add a blocking dialog to confirm deletion.
+        //then even do a check, ensure 200 from delete.
 
       // http://jsfiddle.net/ricardohbin/5z5Qz/
 
