@@ -103,6 +103,12 @@ angular.module('uberLocationApp')
       var toDelete = ToDelete.remove({id: location._id});
     };
 
+    $scope.locationNameUpdate = function(event, location) {
+      console.log(location.assignedName);
+      //overlay, ask for new name in dialog
+
+    };
+
 
     $scope.existingLocations = LocationResource.query();
     
