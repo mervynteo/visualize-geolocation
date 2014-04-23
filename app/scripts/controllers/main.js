@@ -2,7 +2,7 @@
 
 angular.module('uberLocationApp')
   .controller('MainCtrl', function ($scope, $http, $resource, $log) {
-    //TODO: refactor resources out of functions
+    //Resource call should be meteor like? show changes first, if error, undo and notify user.
     var ResourceLocation = $resource('api/locations');
     var ResourceLocationId = $resource('api/locations/:id', {
       id: '@id'
@@ -116,20 +116,18 @@ angular.module('uberLocationApp')
     $scope.locationNameEdit = function(event, location) {
       var elInput = event.toElement.parentElement.firstElementChild;
 
-      $scope.hasLocationNameEditClicked = true;
+      //placed on model. so we can utilize isolated scope
+      location.hasLocationNameEditClicked = true;
       elInput.removeAttribute("readonly");
 
-      // upon clicking keypress enter or clicking a new save glyph, perform rest call.
-      // could use directive-->emit event to update. OR must click glyph to update
+      // upon keypress enter or clicking a new save glyph, perform rest call.
+      // keypress: ould use directive-->emit event to update. 
       // http://stackoverflow.com/questions/17470790/how-to-use-a-keypress-event-in-angularjs
     };
 
-    $scope.hasLocationNameEditClicked = false; //refactor
-
     $scope.locationNameEditSubmit = function(event, location) {
-      //do resource PUT to edit.
       //make box readonly again. OR just reload all locations
-      $scope.hasLocationNameEditClicked = false;
+      location.hasLocationNameEditClicked = false;
 
       console.log(location.assignedName);
       ResourceLocationId.update({id: location._id}, {updatedName: location.assignedName});
@@ -138,6 +136,9 @@ angular.module('uberLocationApp')
     $scope.existingLocations = ResourceLocation.query();
     
     $scope.existingLocations.$promise.then(function(result) {
+      for (var i in result) {
+        result[i].hasLocationNameEditClicked = false;
+      }
       console.log(result);
       $scope.existingLocations = result;
     });
