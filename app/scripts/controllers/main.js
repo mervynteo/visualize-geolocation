@@ -8,8 +8,8 @@ angular.module('uberLocationApp')
       id: '@id'
     },{
       update: {
-       method:'PUT',
-       params: {}
+        method:'PUT',
+        params: {}
       }
     });
 
@@ -38,10 +38,17 @@ angular.module('uberLocationApp')
         minZoom: 3
       },
       control: {},
+      dynamicMarkers: [
+        {
+          latitude: 49.26175546590094,
+          longitude: -123.04447174072266,
+          showWindow: false
+        }
+      ],
       events: {
         click: function (mapModel, eventName, originalEventArgs) {
           // 'this' is the directive's scope
-          $log.log("user defined event: " + eventName, mapModel, originalEventArgs);
+          $log.log('user defined event: ' + eventName, mapModel, originalEventArgs);
 
           var e = originalEventArgs[0];
 
@@ -73,7 +80,7 @@ angular.module('uberLocationApp')
           $scope.locationCreate.params.address.$promise.then(function(result) {
             console.log(result.results[0].formatted_address);
             $scope.locationCreate.params.address = result.results[0].formatted_address;
-          })
+          });
 
           $scope.$apply();
           clearObject($scope.locationCreate.status);
@@ -85,9 +92,9 @@ angular.module('uberLocationApp')
     $scope.locationCreate.dummy = function(form) {
       if (!$scope.locationCreate.params.address) {
         //display warning in red
-        console.log("Need to click on map to select address first");
+        console.log('Need to click on map to select address first');
         $scope.locationCreate.status.needAddress = true;
-        return
+        return;
       }
 
       console.log($scope.locationCreate.params);
@@ -106,7 +113,7 @@ angular.module('uberLocationApp')
 
       // http://jsfiddle.net/ricardohbin/5z5Qz/
 
-      event.toElement.parentElement.parentElement.style.display = "none";
+      event.toElement.parentElement.parentElement.style.display = 'none';
       //add smooth transitions later
       //TODO: add unit test here to ensure this hierachal relationship isnt messed
 
@@ -118,7 +125,7 @@ angular.module('uberLocationApp')
 
       //placed on model. so we can utilize isolated scope
       location.hasLocationNameEditClicked = true;
-      elInput.removeAttribute("readonly");
+      elInput.removeAttribute('readonly');
 
       // upon keypress enter or clicking a new save glyph, perform rest call.
       // keypress: ould use directive-->emit event to update. 
@@ -135,16 +142,21 @@ angular.module('uberLocationApp')
 
     $scope.existingLocations = ResourceLocation.query();
     
+    // this is sort of our page init
     $scope.existingLocations.$promise.then(function(result) {
+      var currentItr;
       for (var i in result) {
-        result[i].hasLocationNameEditClicked = false;
+        currentItr = result[i];
+        currentItr.hasLocationNameEditClicked = false; // works as we take reference to object
       }
       console.log(result);
-      $scope.existingLocations = result;
+      $scope.existingLocations = result; // existingLocations is our main model
+      $scope.map.dynamicMarkers = $scope.existingLocations; // TEST this. gives us ability to put anything in markers now
+      console.log($scope.map.dynamicMarkers);
     });
 
     function clearObject(statusObj) {
-      console.log("status cleared");
+      console.log('status cleared');
       for (var prop in statusObj) {
         if (statusObj.hasOwnProperty(prop)) {
           delete statusObj[prop];
