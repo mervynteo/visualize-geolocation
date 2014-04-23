@@ -88,14 +88,23 @@ body,
   width: 330px;
   height: 150px;
   position: relative;
-  p {
+  .name-group {
     position: absolute;
     top: 2px;
     left: 2px;
     color: white;
     text-shadow: 0 1px 1px rgba(0,0,0,0.8);
-    text-transform: uppercase;
-    font-size: 16px;
+    input {
+      background: transparent;
+      border: 0;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.8);
+      text-transform: uppercase;
+      font-size: 16px;
+      &:focus {
+        outline: 0;
+      }
+    }
+
     span {
       cursor: pointer;
     }

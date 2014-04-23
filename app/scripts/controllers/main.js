@@ -2,6 +2,7 @@
 
 angular.module('uberLocationApp')
   .controller('MainCtrl', function ($scope, $http, $resource, $log) {
+    //TODO: refactor resources out of functions
     var LocationResource = $resource('api/locations');
     $scope.locationCreate = {
       params: {},
@@ -98,17 +99,30 @@ angular.module('uberLocationApp')
 
       event.toElement.parentElement.parentElement.style.display = "none";
       //add smooth transitions later
+      //TODO: add unit test here to ensure this hierachal relationship isnt messed
 
       var ToDelete = $resource('api/locations/:id', {id: '@id'});
       var toDelete = ToDelete.remove({id: location._id});
     };
 
-    $scope.locationNameUpdate = function(event, location) {
-      console.log(location.assignedName);
-      //overlay, ask for new name in dialog
+    $scope.locationNameEdit = function(event, location) {
+      var elInput = event.toElement.parentElement.firstElementChild;
 
+      $scope.hasLocationNameEditClicked = true;
+      elInput.removeAttribute("readonly");
+
+      // upon clicking keypress enter or clicking a new save glyph, perform rest call.
+      // could use directive-->emit event to update. OR must click glyph to update
+      // http://stackoverflow.com/questions/17470790/how-to-use-a-keypress-event-in-angularjs
     };
 
+    $scope.hasLocationNameEditClicked = false; //refactor
+
+    $scope.locationNameEditSubmit = function(event, location) {
+      //do resource PUT to edit.
+      //make box readonly again. OR just reload all locations
+      $scope.hasLocationNameEditClicked = false;
+    };
 
     $scope.existingLocations = LocationResource.query();
     

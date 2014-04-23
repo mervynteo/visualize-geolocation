@@ -47,9 +47,12 @@
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="existingLocation in existingLocations">
         <div class="location-geo-image" style="background-image: url('http://maps.googleapis.com/maps/api/streetview?size=330x150&location={{existingLocation.latitude}},{{existingLocation.longitude}}&fov=90&heading=235&pitch=10&sensor=false')">
-          <p>
-            {{existingLocation.assignedName}}<span class="glyphicon glyphicon-pencil" ng-click="locationNameUpdate($event, existingLocation)"></span>
-          </p>
+          <div class="name-group">
+          <!--Order of these children is important in main.js locationNameEdit()-->
+            <input type="text" ng-model="existingLocation.assignedName" readonly="readonly"></input>
+            <span ng-show="!hasLocationNameEditClicked" class="glyphicon glyphicon-pencil" ng-click="locationNameEdit($event, existingLocation)"></span>
+            <span ng-show="hasLocationNameEditClicked" class="glyphicon glyphicon-ok"></span>
+          </div>
           <span class="glyphicon glyphicon-remove location-delete" ng-click="locationDelete($event, existingLocation)"></span>
         </div>
         <p class="location-address">{{existingLocation.address}}<span class="glyphicon glyphicon-pencil"></span></p>
