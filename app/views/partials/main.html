@@ -51,7 +51,7 @@
           <!--Order of these children is important in main.js locationNameEdit()-->
             <input type="text" ng-model="existingLocation.assignedName" readonly="readonly"></input>
             <span ng-show="!hasLocationNameEditClicked" class="glyphicon glyphicon-pencil" ng-click="locationNameEdit($event, existingLocation)"></span>
-            <span ng-show="hasLocationNameEditClicked" class="glyphicon glyphicon-ok"></span>
+            <span ng-show="hasLocationNameEditClicked" class="glyphicon glyphicon-ok" ng-click="locationNameEditSubmit($event, existingLocation)"></span>
           </div>
           <span class="glyphicon glyphicon-remove location-delete" ng-click="locationDelete($event, existingLocation)"></span>
         </div>

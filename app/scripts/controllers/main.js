@@ -3,7 +3,16 @@
 angular.module('uberLocationApp')
   .controller('MainCtrl', function ($scope, $http, $resource, $log) {
     //TODO: refactor resources out of functions
-    var LocationResource = $resource('api/locations');
+    var ResourceLocation = $resource('api/locations');
+    var ResourceLocationId = $resource('api/locations/:id', {
+      id: '@id'
+    },{
+      update: {
+       method:'PUT',
+       params: {}
+      }
+    });
+
     $scope.locationCreate = {
       params: {},
       status: {}
@@ -82,7 +91,7 @@ angular.module('uberLocationApp')
       }
 
       console.log($scope.locationCreate.params);
-      var newLocation = new LocationResource($scope.locationCreate.params);
+      var newLocation = new ResourceLocation($scope.locationCreate.params);
 
       newLocation.$save();
       // upon submit: clear all fields & have a area that says Saved!
@@ -101,8 +110,7 @@ angular.module('uberLocationApp')
       //add smooth transitions later
       //TODO: add unit test here to ensure this hierachal relationship isnt messed
 
-      var ToDelete = $resource('api/locations/:id', {id: '@id'});
-      var toDelete = ToDelete.remove({id: location._id});
+      ResourceLocationId.remove({id: location._id});
     };
 
     $scope.locationNameEdit = function(event, location) {
@@ -122,9 +130,12 @@ angular.module('uberLocationApp')
       //do resource PUT to edit.
       //make box readonly again. OR just reload all locations
       $scope.hasLocationNameEditClicked = false;
+
+      console.log(location.assignedName);
+      ResourceLocationId.update({id: location._id}, {updatedName: location.assignedName});
     };
 
-    $scope.existingLocations = LocationResource.query();
+    $scope.existingLocations = ResourceLocation.query();
     
     $scope.existingLocations.$promise.then(function(result) {
       console.log(result);
