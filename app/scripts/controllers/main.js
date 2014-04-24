@@ -18,9 +18,6 @@ angular.module('uberLocationApp')
       status: {}
     };
 
-    $http.get('/api/awesomeThings').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-    });
     google.maps.visualRefresh = true;
 
     $scope.map = {
