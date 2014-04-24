@@ -40,7 +40,7 @@
         Select a location on map first
       </div>
       <p>Current selected address: {{locationCreate.params.address}}</p>
-      <form ng-submit="locationCreate.dummy(form)" class="form" name="form">
+      <form ng-submit="locationCreate.submit(form)" class="form" name="form">
         <input type="text" ng-model="locationCreate.params.assignedName" placeholder="Name this location" required id="name-field">
         <button type="submit" class="btn">Save Location</button>
       </form>

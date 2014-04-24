@@ -89,7 +89,7 @@ angular.module('uberLocationApp')
       }
     };
 
-    $scope.locationCreate.dummy = function(form) {
+    $scope.locationCreate.submit = function(form) {
       if (!$scope.locationCreate.params.address) {
         //display warning in red
         console.log('Need to click on map to select address first');
@@ -97,15 +97,24 @@ angular.module('uberLocationApp')
         return;
       }
 
-      console.log($scope.locationCreate.params);
-      var newLocation = new ResourceLocation($scope.locationCreate.params);
+      var toPush = clone($scope.locationCreate.params);
 
-      newLocation.$save();
+      ResourceLocation.save($scope.locationCreate.params, function() {
+        console.log('Post success');
+        //inject it into model so user sees it right away (as opposed to AJAXing the server)
+        $scope.existingLocations.push(toPush);
+        //TODO: make scroll effect so user sees newly created location?
+      }, function() {
+        console.log('Post error');
+        // TODO: tell user there was error. TODO: way to generalize this for all resource requests?
+      });
+
       // upon submit: clear all fields & have a area that says Saved!
       $scope.locationCreate.params = {};
       $scope.locationCreate.status.saveSuccess = true; // need to reset after more clicks
       // maybe after save, scroll down to google picture of created location?
     };
+    // ------ END: $scope.locationCreate.submit() ---------
 
     $scope.locationDelete = function(event, location) {
       //maybe add a blocking dialog to confirm deletion.
@@ -114,6 +123,7 @@ angular.module('uberLocationApp')
       // http://jsfiddle.net/ricardohbin/5z5Qz/
 
       event.toElement.parentElement.parentElement.style.display = 'none';
+      //TODO: remove map markers as well. this means we need to find elements in model to remove.
       //add smooth transitions later
       //TODO: add unit test here to ensure this hierachal relationship isnt messed
 
@@ -140,27 +150,47 @@ angular.module('uberLocationApp')
       ResourceLocationId.update({id: location._id}, {updatedName: location.assignedName});
     };
 
+    /////////// on page load, query DB to get existing locations.
+
     $scope.existingLocations = ResourceLocation.query();
-    
-    // this is sort of our page init
     $scope.existingLocations.$promise.then(function(result) {
       var currentItr;
-      for (var i in result) {
+      var i;
+      
+      // this inits the edit/submit glyph
+      for (i in result) {
         currentItr = result[i];
         currentItr.hasLocationNameEditClicked = false; // works as we take reference to object
       }
-      console.log(result);
+
       $scope.existingLocations = result; // existingLocations is our main model
-      $scope.map.dynamicMarkers = $scope.existingLocations; // TEST this. gives us ability to put anything in markers now
+      $scope.map.dynamicMarkers = $scope.existingLocations; // TODO: TEST this. gives us ability to put anything in markers now
       console.log($scope.map.dynamicMarkers);
     });
+
+    ///////////// helper functions
 
     function clearObject(statusObj) {
       console.log('status cleared');
       for (var prop in statusObj) {
         if (statusObj.hasOwnProperty(prop)) {
           delete statusObj[prop];
-         }
+        }
       }
+    }
+
+    function clone(obj) {
+      if (null == obj || 'object' != typeof obj) {
+        return obj;
+      }
+      var copy = obj.constructor();
+
+      for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) {
+          copy[attr] = obj[attr];
+        }
+      }
+
+      return copy;
     }
   });
