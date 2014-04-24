@@ -2,7 +2,6 @@
 
 angular.module('uberLocationApp')
   .controller('MainCtrl', function ($scope, $http, $resource, $log) {
-    //Resource call should be meteor like? show changes first, if error, undo and notify user.
     var ResourceLocation = $resource('api/locations');
     var ResourceLocationId = $resource('api/locations/:id', {
       id: '@id'
@@ -164,6 +163,8 @@ angular.module('uberLocationApp')
     $scope.existingLocations.$promise.then(function(result) {
       var currentItr;
       var i;
+
+      console.log("GET Success");
       
       // this inits the edit/submit glyph
       for (i in result) {
@@ -174,6 +175,8 @@ angular.module('uberLocationApp')
       $scope.existingLocations = result; // existingLocations is our main model
       $scope.map.dynamicMarkers = $scope.existingLocations; // TODO: TEST this. gives us ability to put anything in markers now
       console.log($scope.map.dynamicMarkers);
+    }, function() {
+      console.log("GET failed");
     });
 
     ///////////// helper functions
