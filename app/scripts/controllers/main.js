@@ -35,6 +35,10 @@ angular.module('uberLocationApp')
         minZoom: 3
       },
       control: {},
+      clickedMarker: {
+        latitude: null,
+        longitude: null
+      },
       dynamicMarkers: [
         {
           latitude: 49.26175546590094,
@@ -45,26 +49,20 @@ angular.module('uberLocationApp')
       events: {
         click: function (mapModel, eventName, originalEventArgs) {
           // 'this' is the directive's scope
-          $log.log('user defined event: ' + eventName, mapModel, originalEventArgs);
 
           var e = originalEventArgs[0];
 
-          if (!$scope.map.clickedMarker) {
-            $scope.map.clickedMarker = {
-              title: 'You clicked here',
-              latitude: e.latLng.lat(),
-              longitude: e.latLng.lng()
-            };
-          }
-          else {
-            $scope.map.clickedMarker.latitude = e.latLng.lat();
-            $scope.map.clickedMarker.longitude = e.latLng.lng();
-          }
+          /*
+          * necessary to store current clicked coords outside of locationCreate.params model
+          *   because upon naming our new location (in input text), it would cause a refresh on the model 
+          * From UX perspective, the bouncing marker on current clicked position bounces each time
+          *   text is edited in input box
+          */
+          $scope.map.clickedMarker.latitude = e.latLng.lat();
+          $scope.map.clickedMarker.longitude = e.latLng.lng();
 
-          //not sure if angular-google maps needs clickedMarker lat long internally or not,
-          // so leave as is for now
-          $scope.locationCreate.params.latitude = $scope.map.clickedMarker.latitude;
-          $scope.locationCreate.params.longitude = $scope.map.clickedMarker.longitude;
+          $scope.locationCreate.params.latitude = e.latLng.lat();
+          $scope.locationCreate.params.longitude = e.latLng.lng();
 
           //reverse geocode into google to grab human readable address
           var RevGeocodeResource = $resource('https://maps.googleapis.com/maps/api/geocode/json?latlng='
@@ -80,8 +78,9 @@ angular.module('uberLocationApp')
           });
 
           $scope.$apply();
+
+          // we clear status to rid of any green or red alert boxes.
           clearObject($scope.locationCreate.status);
-          console.log($scope.map.clickedMarker);
         }
       }
     };
@@ -98,6 +97,11 @@ angular.module('uberLocationApp')
 
       ResourceLocation.save($scope.locationCreate.params, function() {
         console.log('Post success');
+
+        // clenase clicked marker coords so we no longer have indicating marker on where user clicked.
+        $scope.map.clickedMarker.latitude = null;
+        $scope.map.clickedMarker.longitude = null;
+
         //inject it into model so user sees it right away (as opposed to AJAXing the server)
         $scope.existingLocations.push(toPush);
         //TODO: make scroll effect so user sees newly created location?
