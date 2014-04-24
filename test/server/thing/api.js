@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should'),
+/*var should = require('should'),
     app = require('../../../server'),
     request = require('supertest');
 
@@ -17,4 +17,4 @@ describe('GET /api/awesomeThings', function() {
         done();
       });
   });
-});
+});*/
