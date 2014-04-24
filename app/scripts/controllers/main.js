@@ -119,16 +119,18 @@ angular.module('uberLocationApp')
 
     $scope.locationDelete = function(event, location) {
       //maybe add a blocking dialog to confirm deletion.
-        //then even do a check, ensure 200 from delete.
 
       // http://jsfiddle.net/ricardohbin/5z5Qz/
 
-      event.toElement.parentElement.parentElement.style.display = 'none';
-      //TODO: remove map markers as well. this means we need to find elements in model to remove.
-      //add smooth transitions later
-      //TODO: add unit test here to ensure this hierachal relationship isnt messed
-
-      ResourceLocationId.remove({id: location._id});
+      ResourceLocationId.remove({id: location._id}, function() {
+        console.log('DELETE success');
+        event.toElement.parentElement.parentElement.style.display = 'none';
+        //TODO: remove map markers as well. this means we need to find elements in model to remove.
+        //add smooth transitions later
+        //TODO: add unit test here to ensure this hierachal relationship isnt messed
+      }, function() {
+        console.log('DELETE error');
+      });
     };
 
     $scope.locationNameEdit = function(event, location) {
