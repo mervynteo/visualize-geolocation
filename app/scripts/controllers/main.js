@@ -146,11 +146,16 @@ angular.module('uberLocationApp')
     };
 
     $scope.locationNameEditSubmit = function(event, location) {
-      //make box readonly again. OR just reload all locations
-      location.hasLocationNameEditClicked = false;
+      var elInput = event.toElement.parentElement.firstElementChild
 
       console.log(location.assignedName);
-      ResourceLocationId.update({id: location._id}, {updatedName: location.assignedName});
+      ResourceLocationId.update({id: location._id}, {updatedName: location.assignedName}, function() {
+        console.log('UPDATE success');
+        location.hasLocationNameEditClicked = false;
+        elInput.setAttribute('readonly', 'readonly');
+      }, function() {
+        console.log('UPDATE failed');
+      });
     };
 
     /////////// on page load, query DB to get existing locations.
