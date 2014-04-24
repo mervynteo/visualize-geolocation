@@ -7,7 +7,8 @@ var should = require('should'),
     LocationModel = mongoose.model('Location');
 
 var location,
-    id;
+    id,
+    mockLocation;
 
 describe('GET', function() {
   describe('/api/locations', function() {
@@ -32,8 +33,8 @@ describe('GET', function() {
       location = new LocationModel({
         assignedName: 'My Bike Shop',
         address: '123 Fake Street',
-        longitude: '49.001',
-        latitude: '-123.22'
+        longitude: 49.001,
+        latitude: -123.22
       });
 
       // Clear locations before testing
@@ -68,20 +69,55 @@ describe('GET', function() {
 describe('POST', function() {
   describe('/api/locations', function() {
 
+    before(function(done) {
+      mockLocation = {
+        assignedName: 'Homer Simpson',
+        address: '123 Fake Street',
+        longitude: 49.99,
+        latitude: -140.22
+      };
+
+      // Clear locations before testing
+      LocationModel.remove().exec();
+      done();
+    });
+
+    afterEach(function(done) {
+      LocationModel.remove().exec();
+      done();
+    });
+
     it('should respond with 200 on success', function(done) {
       request(app)
         .post('/api/locations')
-        .send({
-          assignedName: 'Homer Simpson',
-          address: '123 Fake Street',
-          longitude: '49.99',
-          latitude: '-140.22'
-        })
+        .send(mockLocation)
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
           done();
         });
     });
+
+    it('should have created document in database', function(done) {
+      request(app)
+        .post('/api/locations')
+        .send(mockLocation)
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          LocationModel.find(function(err, docs) {
+            if (err) {
+              return done(err);
+            }
+            console.log(docs[0]);
+            for (var postedKey in mockLocation) {
+              docs[0].should.have.property(postedKey, mockLocation[postedKey]);
+            }
+          });
+          done();
+        });
+    });
+
   });
 });
