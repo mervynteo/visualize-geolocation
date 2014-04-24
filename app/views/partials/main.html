@@ -10,7 +10,7 @@
   pan="true"
   control="map.control"
   >
-    <markers models="map.dynamicMarkers" coords="'self'" icon="'icon'" click="'onClicked'" fit='true'>
+    <markers models="map.dynamicMarkers" coords="'self'" icon="'icon'" click="'onClicked'" fit='false'>
       <windows show="'showWindow'" closeClick="'closeClick'" ng-cloak>
           <p>Dynamic Marker created via a delay!</p>
 
@@ -19,7 +19,7 @@
           <p class="muted">My marker will stay open when the window is popped up!</p>
       </windows>
   </markers>
-  
+
   <div ng-init="opts = {animation:1}">
       <marker coords="map.clickedMarker" options="opts">
           <!--<marker-label content="map.clickedMarker.title" anchor="24 40" class="marker-labels"/>-->
