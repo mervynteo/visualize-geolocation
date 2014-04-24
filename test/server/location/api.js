@@ -2,13 +2,18 @@
 
 var should = require('should'),
     app = require('../../../server'),
-    request = require('supertest'),
+    request = require('supertest'), // Look @ supertest/node_modules/superagent/docs/index.md
     mongoose = require('mongoose'),
     LocationModel = mongoose.model('Location');
 
 var location,
     id,
-    mockLocation;
+    mockLocation = {
+      assignedName: 'Homer Simpson',
+      address: '123 Fake Street',
+      longitude: 49.99,
+      latitude: -140.22
+    };
 
 describe('GET', function() {
   describe('/api/locations', function() {
@@ -30,12 +35,7 @@ describe('GET', function() {
 
   describe('/api/locations/:id', function() {
     before(function(done) {
-      location = new LocationModel({
-        assignedName: 'My Bike Shop',
-        address: '123 Fake Street',
-        longitude: 49.001,
-        latitude: -123.22
-      });
+      location = new LocationModel(mockLocation);
 
       // Clear locations before testing
       LocationModel.remove().exec();
@@ -70,13 +70,6 @@ describe('POST', function() {
   describe('/api/locations', function() {
 
     before(function(done) {
-      mockLocation = {
-        assignedName: 'Homer Simpson',
-        address: '123 Fake Street',
-        longitude: 49.99,
-        latitude: -140.22
-      };
-
       // Clear locations before testing
       LocationModel.remove().exec();
       done();
@@ -110,7 +103,6 @@ describe('POST', function() {
             if (err) {
               return done(err);
             }
-            console.log(docs[0]);
             for (var postedKey in mockLocation) {
               docs[0].should.have.property(postedKey, mockLocation[postedKey]);
             }
@@ -119,5 +111,43 @@ describe('POST', function() {
         });
     });
 
+  });
+});
+
+describe('DELETE', function() {
+  describe('/api/locations/:id', function() {
+
+    before(function(done) {
+      // Clear locations before testing
+      LocationModel.remove().exec();
+
+      location = new LocationModel(mockLocation);
+      location.save();
+      id = location._id;
+
+      done();
+    });
+
+    afterEach(function(done) {
+      LocationModel.remove().exec();
+      done();
+    });
+
+    it('should delete document in database', function(done) {
+      request(app)
+        .del('/api/locations/' + id)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+
+          // now ensure that find by id returns null
+          LocationModel.findById(id, function(err, loc) {
+            if (err) next(err);
+            //reminder: can't use loc.should.not.be.ok as that doesnt work on null
+            should.not.exist(loc);
+          });
+          done();
+        })
+    });
   });
 });
