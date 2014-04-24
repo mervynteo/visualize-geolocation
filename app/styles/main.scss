@@ -16,8 +16,13 @@ body,
 .angular-google-map-container {
   width: 100%;
   height: 100%;
+}
 
-  //z-index: 0;
+.marker-info-name {
+  font-weight: 600;
+}
+.marker-info-addr {
+  font-size: 12px;
 }
 
 #control-panel {

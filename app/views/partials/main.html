@@ -12,11 +12,9 @@
   >
     <markers models="map.dynamicMarkers" coords="'self'" icon="'icon'" click="'onClicked'" fit='false'>
       <windows show="'showWindow'" closeClick="'closeClick'" ng-cloak>
-          <p>Dynamic Marker created via a delay!</p>
-
-          <p ng-non-bindable>{{address}}This is an info window at {{ latitude | number:4 }}, {{ longitude | number:4 }}!</p>
-
-          <p class="muted">My marker will stay open when the window is popped up!</p>
+          <!-- map framework needs ng-non-bindable attr -->
+          <p class="marker-info-name" ng-non-bindable>{{assignedName}}</p>
+          <p class="marker-info-addr" ng-non-bindable>{{address}}</p>
       </windows>
   </markers>
 
