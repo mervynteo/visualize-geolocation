@@ -22,10 +22,10 @@ angular.module('uberLocationApp')
 
     $scope.map = {
       center: {
-        latitude: 49.25,
-        longitude: -123.1
+        latitude: 37.7649,
+        longitude: -122.4255
       },
-      zoom: 12,
+      zoom: 13,
       dragging: false,
       bounds: {},
       options: {
