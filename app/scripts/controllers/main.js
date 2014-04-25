@@ -84,7 +84,7 @@ angular.module('uberLocationApp')
       }
     };
 
-    $scope.locationCreate.submit = function(form) {
+    $scope.locationCreate.submit = function() {
       if (!$scope.locationCreate.params.address) {
         //display warning in red
         console.log('Need to click on map to select address first');
@@ -145,7 +145,7 @@ angular.module('uberLocationApp')
     };
 
     $scope.locationNameEditSubmit = function(event, location) {
-      var elInput = event.toElement.parentElement.firstElementChild
+      var elInput = event.toElement.parentElement.firstElementChild;
 
       console.log(location.assignedName);
       ResourceLocationId.update({id: location._id}, {updatedName: location.assignedName}, function() {
@@ -164,7 +164,7 @@ angular.module('uberLocationApp')
       var currentItr;
       var i;
 
-      console.log("GET Success");
+      console.log('GET Success');
       
       // this inits the edit/submit glyph
       for (i in result) {
@@ -176,7 +176,7 @@ angular.module('uberLocationApp')
       $scope.map.dynamicMarkers = $scope.existingLocations; // TODO: TEST this. gives us ability to put anything in markers now
       console.log($scope.map.dynamicMarkers);
     }, function() {
-      console.log("GET failed");
+      console.log('GET failed');
     });
 
     ///////////// helper functions
