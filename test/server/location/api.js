@@ -24,8 +24,7 @@ describe('GET', function() {
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          //end() is necessary, otherwise tests dont report failures! (false positive)
-          if (err) return done(err);
+          if (err) return done(err); // Ensure to check this in end() otherwise we wont report errors at mocha summary
           res.body.should.be.instanceof(Array);
           done();
         });
@@ -149,5 +148,41 @@ describe('DELETE', function() {
           done();
         })
     });
+  });
+});
+
+describe('PUT', function() {
+  describe('/api/locations/:id', function() {
+    before(function(done) {
+      // Clear locations before testing
+      LocationModel.remove().exec();
+
+      location = new LocationModel(mockLocation);
+      location.save();
+      id = location._id;
+
+      done();
+    });
+
+    afterEach(function(done) {
+      LocationModel.remove().exec();
+      done();
+    });
+
+    it('should update assignedName to new value', function(done) {
+      request(app)
+        .put('/api/locations/' + id)
+        .send({updatedName: 'Bart Simpson Treehouse'})
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+
+          LocationModel.findById(id, function(err, loc) {
+            loc.should.have.property('assignedName','Bart Simpson Treehouse');
+          })
+          done();
+        });
+    });
+
   });
 });
