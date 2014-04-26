@@ -9,14 +9,15 @@ see http://54.187.106.130 for a live demo
 Scaffolded out with Yeoman
 
 Tech stack:
-* Front End: AngularJS(Angular Google Maps module
-* Back End: Node.js, ExpressJS 4.0, and MongoDB (Mongoose)
+* Front End: AngularJS(Angular Google Maps module), Sass, and Bootstrap 3
+* Back End: AWS EC2(init daemon), Node.js, ExpressJS 4.0, MongoDB (Mongoose), and Mocha(should.js)
 
 CRUD functions available via RESTful API
 * Create new locations (Saves the current coordinates and user defined name)
 * Read locations. Both for a single one and all
 * Update locations. Can update the assigned name
 * Delete locations. Click the X on the image
+* All united tested
 
 REST nouns are defined as
 * /api/locations
@@ -27,3 +28,6 @@ Make sure to test these things to play with
 * Editing location names via the pencil icon
 * Deleting locations via the X icon
 * All actions are reflected instantaneously in browser
+* Page responsive design (still in progress though)
+
+see http://54.187.106.130 for a live demo
