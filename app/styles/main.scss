@@ -2,6 +2,16 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 
+#banner {
+  font-family: "ff-clan-web-pro-wide", sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  height: 30px;
+}
+
 p {
   font-family: "ff-clan-web-pro-wide", sans-serif;
   font-weight: normal;
@@ -25,11 +35,24 @@ body,
   font-size: 12px;
 }
 
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    #control-panel {
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #control-panel {
+        width: 250px;
+    }
+}
+
 #control-panel {
+  transition: all 1s ease-in;
   position: absolute;
   right: 0px;
-  top: 0px;
-  width: 400px; //needs to be responsive
+  top: 30px;
   background-color: white;
   height: 100%;
   overflow-y: scroll;
@@ -83,16 +106,19 @@ body,
       text-transform: uppercase;
       font-size: 14px;
       font-weight: 500;
-      padding: 5px 50px;
+      padding: 5px;
       margin: 10px auto;
+      width: 61.8%;
     }
   }
 }
 
 .location-geo-image {
-  width: 330px;
-  height: 150px;
+  max-width: 330px;
   position: relative;
+  img {
+    max-width: 100%;
+  }
   .name-group {
     position: absolute;
     top: 2px;
@@ -112,6 +138,7 @@ body,
 
     span {
       cursor: pointer;
+      display: block; // places it on bottom of input for now
     }
   }
   .location-delete {
@@ -181,27 +208,4 @@ body,
 
 .marketing p + h4 {
     margin-top: 28px;
-}
-
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 730px;
-    }
-
-    /* Remove the padding we set earlier */
-    .header,
-    .marketing,
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
-    }
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
-    }
 }

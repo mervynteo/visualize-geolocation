@@ -1,4 +1,8 @@
 <!-- <div ng-include="'partials/navbar'"></div> -->
+<div id="banner">
+  Locationify
+</div>
+
 <div class="google-map span7"
   center="map.center"
   zoom="map.zoom"
@@ -62,7 +66,8 @@
     <!-- show existing saved locations -->
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="existingLocation in existingLocations">
-        <div class="location-geo-image" style="background-image: url('http://maps.googleapis.com/maps/api/streetview?size=330x150&location={{existingLocation.latitude}},{{existingLocation.longitude}}&fov=90&heading=235&pitch=10&sensor=false')">
+        <div class="location-geo-image">
+          <img src="http://maps.googleapis.com/maps/api/streetview?size=330x150&location={{existingLocation.latitude}},{{existingLocation.longitude}}&fov=90&heading=235&pitch=10&sensor=false"/>
           <div class="name-group">
           <!--Order of these children is important in main.js locationNameEdit()-->
             <input type="text" ng-model="existingLocation.assignedName" readonly="readonly"></input>
