@@ -31,7 +31,10 @@ angular.module('uberLocationApp')
         streetViewControl: false,
         panControl: false,
         maxZoom: 20,
-        minZoom: 3
+        minZoom: 3,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.LEFT_CENTER
+        }
       },
       control: {},
       clickedMarker: {
