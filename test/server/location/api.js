@@ -79,21 +79,11 @@ describe('POST', function() {
       done();
     });
 
-    it('should respond with 200 on success', function(done) {
-      request(app)
-        .post('/api/locations')
-        .send(mockLocation)
-        .expect(200)
-        .end(function(err, res) {
-          if (err) return done(err);
-          done();
-        });
-    });
-
     it('should have created document in database', function(done) {
       request(app)
         .post('/api/locations')
         .send(mockLocation)
+        .expect(200)
         .end(function(err, res) {
           if (err) {
             return done(err);
@@ -105,6 +95,33 @@ describe('POST', function() {
             for (var postedKey in mockLocation) {
               docs[0].should.have.property(postedKey, mockLocation[postedKey]);
             }
+          });
+          done();
+        });
+    });
+
+    it('should respond with JSON object that is copy of newly created location', function(done) {
+      request(app)
+        .post('/api/locations')
+        .send(mockLocation)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+          res.body.should.be.instanceof(Object);
+
+          // we can do DB wide search as we clear locatins @ before (Each)
+          LocationModel.find(function(err, docs) {
+            if (err) {
+              return done(err);
+            }
+
+            var doc = docs[0];
+            // need to cast doc._id as it will have char and num not in string but 'primitive'
+            res.body.should.have.property('_id', doc._id.toString());
+            res.body.should.have.property('assignedName', doc.assignedName);
+            res.body.should.have.property('longitude', doc.longitude);
+            res.body.should.have.property('latitude', doc.latitude);
+            res.body.should.have.property('address', doc.address);
           });
           done();
         });

@@ -97,15 +97,16 @@ angular.module('uberLocationApp')
 
       var toPush = clone($scope.locationCreate.params);
 
-      ResourceLocation.save($scope.locationCreate.params, function() {
+      ResourceLocation.save($scope.locationCreate.params, function(createdLocation) {
+        // createdLocation param is server response newly created location (most importantly with _id)
         console.log('Post success');
 
-        // clenase clicked marker coords so we no longer have indicating marker on where user clicked.
+        // clense clicked marker coords so we no longer have indicating marker on where user clicked.
         $scope.map.clickedMarker.latitude = null;
         $scope.map.clickedMarker.longitude = null;
 
         //inject it into model so user sees it right away (as opposed to AJAXing the server)
-        $scope.existingLocations.push(toPush);
+        $scope.existingLocations.push(createdLocation);
         //TODO: make scroll effect so user sees newly created location?
       }, function() {
         console.log('Post error');
