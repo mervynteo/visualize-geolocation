@@ -4,7 +4,7 @@ Locationify
 Visualize locations saved on a map (with Google products)
 ------------------------------------------------------------
 
-see http://54.187.106.130 for a live demo
+see http://locationify.theodoreli.com/ for a live demo
 
 Scaffolded out with Yeoman
 
@@ -30,4 +30,4 @@ Make sure to test these things to play with
 * All actions are reflected instantaneously in browser
 * Page responsive design (still in progress though)
 
-see http://54.187.106.130 for a live demo
+see http://locationify.theodoreli.com/ for a live demo
