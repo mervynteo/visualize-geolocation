@@ -17,6 +17,8 @@ angular.module('uberLocationApp')
       status: {}
     };
 
+    $scope.existingLocations = {};
+
     google.maps.visualRefresh = true;
 
     $scope.map = {
@@ -95,8 +97,6 @@ angular.module('uberLocationApp')
         return;
       }
 
-      var toPush = clone($scope.locationCreate.params);
-
       ResourceLocation.save($scope.locationCreate.params, function(createdLocation) {
         // createdLocation param is server response newly created location (most importantly with _id)
         console.log('Post success');
@@ -105,7 +105,7 @@ angular.module('uberLocationApp')
         $scope.map.clickedMarker.latitude = null;
         $scope.map.clickedMarker.longitude = null;
 
-        //inject it into model so user sees it right away (as opposed to AJAXing the server)
+        //inject it into model so user sees it right away
         $scope.existingLocations.push(createdLocation);
         //TODO: make scroll effect so user sees newly created location?
       }, function() {
@@ -125,12 +125,26 @@ angular.module('uberLocationApp')
 
       // http://jsfiddle.net/ricardohbin/5z5Qz/
 
+      var locId = location._id;
+      var locationObj;
+
       ResourceLocationId.remove({id: location._id}, function() {
         console.log('DELETE success');
-        event.toElement.parentElement.parentElement.style.display = 'none';
-        //TODO: remove map markers as well. this means we need to find elements in model to remove.
+
+        // Using ID, delete the location from our model
+        for (locationObj in $scope.existingLocations) {
+          // check is necessary as we may loop through non location objects.
+          if ($scope.existingLocations[locationObj] && '_id' in $scope.existingLocations[locationObj]) {
+            if ($scope.existingLocations[locationObj]._id === locId) {
+              $scope.existingLocations = _.without($scope.existingLocations, $scope.existingLocations[locationObj]);
+            }
+          }
+        }
+
+        // Update our map markers to reflect deleted location.
+        $scope.map.dynamicMarkers = $scope.existingLocations; // already has a reference to $scope.existing locations, but for some reason this line is necessary
+
         //add smooth transitions later
-        //TODO: add unit test here to ensure this hierachal relationship isnt messed
       }, function() {
         console.log('DELETE error');
       });
@@ -163,8 +177,7 @@ angular.module('uberLocationApp')
 
     /////////// on page load, query DB to get existing locations.
 
-    $scope.existingLocations = ResourceLocation.query();
-    $scope.existingLocations.$promise.then(function(result) {
+    ResourceLocation.query().$promise.then(function(result) {
       var currentItr;
       var i;
 
@@ -176,8 +189,8 @@ angular.module('uberLocationApp')
         currentItr.hasLocationNameEditClicked = false; // works as we take reference to object
       }
 
-      $scope.existingLocations = result; // existingLocations is our main model
-      $scope.map.dynamicMarkers = $scope.existingLocations; // TODO: TEST this. gives us ability to put anything in markers now
+      $scope.existingLocations = clone(result); // existingLocations is our main model
+      $scope.map.dynamicMarkers = $scope.existingLocations;
       console.log($scope.map.dynamicMarkers);
     }, function() {
       console.log('GET failed');
